@@ -86,7 +86,8 @@ class Core
     "-s" => [ true,  "Skip arg lines of output before attempting match."],
     "-k" => [ true,  "Keep (include) arg lines at start of output."   ],
     "-c" => [ false, "Only print a count of matching lines."          ])
-
+  @@rem_opts = Rex::Parser::Arguments.new(
+    "-h" => [ false, "Help banner."                                   ])
   @@search_opts = Rex::Parser::Arguments.new(
     "-h" => [ false, "Help banner."                                   ])
 
@@ -124,6 +125,7 @@ class Core
       "pushm"    => "Pushes the active or list of modules onto the module stack",
       "previous" => "Sets the previously loaded module as the current module",
       "quit"     => "Exit the console",
+      "rem"      => "Record a comment",
       "resource" => "Run the commands stored in a file",
       "makerc"   => "Save commands entered since start to a file",
       "reload_all" => "Reloads all modules from all defined module paths",
@@ -2682,6 +2684,36 @@ class Core
     # replace with new code that permits "nested" tab completion
     # tabs = driver.get_all_commands if (str and str =~ /\w/)
     tabs
+  end
+
+
+  # XXX
+  # 
+  # XXX
+  def cmd_rem(*args)
+    if args.first == "-h"
+      cmd_rem_help
+      return false
+    else
+      return args.join " "
+    end
+  end
+
+  # XXX
+  # 
+  # XXX
+  def cmd_rem_tabs(str, words)
+    return []
+  end
+
+  # XXX
+  #
+  # XXX
+  def cmd_rem_help
+    print_line "Usage: rem [comment]"
+    print_line
+    print_line "All text following the 'rem' command is treated as a comment"
+    print_line
   end
 
   #

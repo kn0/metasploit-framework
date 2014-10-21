@@ -189,14 +189,18 @@ module Shell
         if (block)
           break if (line == nil or block.call(line))
         elsif(input.eof? or line == nil)
-        # If you have sessions active, this will give you a shot to exit gravefully
+        # If you have sessions active, this will give you a shot to exit gracefully
         # If you really are ambitious, 2 eofs will kick this out
           self.stop_count += 1
           next if(self.stop_count > 1)
           run_single("quit")
         else
-        # Otherwise, call what should be an overriden instance method to
-        # process the line.
+          # If the provided line starts with '#' then substitute the rem command instead
+          if (line =~ /^#( ?-h)?/)
+            line.gsub!(/^#( ?-h)?/,'rem ')
+          end
+          # Call what should be an overwritten instance method to
+          # process the line.
           ret = run_single(line)
           # don't bother saving lines that couldn't be found as a
           # command, create the file if it doesn't exist
